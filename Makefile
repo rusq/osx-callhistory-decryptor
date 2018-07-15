@@ -10,7 +10,7 @@ all: $(OUTPUT)
 
 
 $(OUTPUT): $(SRC)
-	$(GO) build -ldflags "-s -w"
+	$(GO) build -ldflags "-s -w" -o $@
 
 gofiles:
 	$(GO) list -f '{{.GoFiles}}'
