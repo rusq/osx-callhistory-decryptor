@@ -1,5 +1,5 @@
-# MacOS X Call history decryptor/converter
-Converts the MacOS X call history to CSV file.
+# MacOS X Call history decryptor/converter to CSV
+Converts the MacOS X call history to CSV file format.
 
 This is a Golang implementation of the [n0fates'][1] [Call History Decryptor][2], and is based on [n0fates'][1] presentation descibing the internals of the database: https://papers.put.as/papers/macosx/2014/Forensic-artifacts-for-Yosemite-call-history-and-sms-anlaysis-ENG.pdf
 
