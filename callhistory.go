@@ -27,6 +27,10 @@ import (
 	"runtime"
 )
 
+const (
+	version = "1.0"
+)
+
 var strKey string         //key from Keychain
 var filename string       // call history database filename
 var outputFilename string // output filename
@@ -45,8 +49,9 @@ func init() {
 func main() {
 	flag.Parse()
 
-	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor (C) 2018 rusq\n"+
-		"Based on Call History Decryptor (C) 2016 n0fate\n")
+	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor v.%s © 2018 rusq\n"+
+		"Based on Call History Decryptor © 2016 n0fate\n",
+		version)
 
 	key, err := getByteKey(strKey)
 	if err != nil {
