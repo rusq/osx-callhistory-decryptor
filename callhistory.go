@@ -34,6 +34,7 @@ const (
 var strKey string         //key from Keychain
 var filename string       // call history database filename
 var outputFilename string // output filename
+var versionOnly bool      // output version and quit
 
 func init() {
 	keyMsg := "Base64 key value from OS X keychain."
@@ -44,14 +45,22 @@ func init() {
 	homeDir := os.Getenv("HOME")
 	flag.StringVar(&filename, "f", "CallHistory.storedata", "filename with call data. Get it from:\n"+homeDir+"/Library/Application Support/CallHistoryDB/\n")
 	flag.StringVar(&outputFilename, "o", "", "output csv filename.  If not specified, result is output to stdout")
+	flag.BoolVar(&versionOnly, "v", false, "print version and quit")
+}
+
+func printHeader() {
+	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor v.%s © 2018 rusq\n"+
+		"Based on Call History Decryptor © 2016 n0fate\n",
+		version)
 }
 
 func main() {
 	flag.Parse()
 
-	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor v.%s © 2018 rusq\n"+
-		"Based on Call History Decryptor © 2016 n0fate\n",
-		version)
+	printHeader()
+	if versionOnly {
+		return
+	}
 
 	key, err := getByteKey(strKey)
 	if err != nil {
