@@ -18,6 +18,9 @@ Decrypt and save the call history of the OS X Yosemite+ to a CSV file.
 ## Usage
 Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
 
+## Download
+Downloads are available on [Releases page][5].
+
 ### On MacOS X
 
 Open the Terminal.app. ([How?][3])
@@ -100,3 +103,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 [2]: https://github.com/n0fate/OS-X-Continuity
 [3]: http://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line
 [4]: https://www.wikihow.com/Open-the-Command-Prompt-in-Windows
+[5]: https://github.com/rusq/osx-callhistory-decryptor/releases
