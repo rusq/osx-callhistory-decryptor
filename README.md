@@ -15,11 +15,11 @@ All credit for the decryption algorithm goes to [n0fate][1].
 ## Purpose
 Decrypt and save the call history of the OS X Yosemite+ to a CSV file.
 
-## Usage
-Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
-
 ## Download
 Downloads are available on [Releases page][5].
+
+## Usage
+Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
 
 ### On MacOS X
 
