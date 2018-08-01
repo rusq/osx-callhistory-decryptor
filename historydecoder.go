@@ -128,7 +128,13 @@ func Cipher(text, key []byte) ([]byte, error) {
 		return nil, nil
 	}
 	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
 	gcm, err := cipher.NewGCMWithNonceSize(block, NonceSz)
+	if err != nil {
+		return nil, err
+	}
 	nonce := make([]byte, NonceSz)
 	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
 		return nil, err
