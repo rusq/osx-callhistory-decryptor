@@ -3,7 +3,7 @@ OUTPUT=callhistory
 SRC=$(wildcard *.go)
 GO=go
 
-.PHONY: all clean gofiles
+.PHONY: all clean gofiles test
 .NOTPARALLEL: clean
 
 all: $(OUTPUT)
@@ -14,6 +14,9 @@ $(OUTPUT): $(SRC)
 
 gofiles:
 	$(GO) list -f '{{.GoFiles}}'
+
+test:
+	$(GO) test
 
 clean:
 	-rm $(OUTPUT)

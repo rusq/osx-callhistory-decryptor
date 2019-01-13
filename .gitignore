@@ -1,1 +1,9 @@
-CallHistory.storedata
+# data
+CallHistory.storedata*
+
+# backup
+*~
+
+# executables
+callhistory
+cmd/msgtime/msgtime

@@ -1,4 +1,4 @@
-package main
+package historydecoder
 
 import (
 	"crypto/aes"
@@ -72,7 +72,7 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 		if err != nil {
 			return 0, err
 		}
-		callTime := calcCallTime(callOffset)
+		callTime := CalcCallTime(callOffset)
 
 		address, err := Decipher(blob, key)
 		if err != nil {
@@ -148,8 +148,8 @@ func Cipher(text, key []byte) ([]byte, error) {
 	return ct, nil
 }
 
-// calcCallTime calculates the call time.
-func calcCallTime(callOffset float64) time.Time {
+// CalcCallTime calculates the call time.
+func CalcCallTime(callOffset float64) time.Time {
 	if callOffset < 0 {
 		callOffset = 0
 	}

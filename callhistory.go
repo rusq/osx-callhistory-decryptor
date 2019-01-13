@@ -25,6 +25,8 @@ import (
 	"log"
 	"os"
 	"runtime"
+
+	"github.com/rusq/callhistory/historydecoder"
 )
 
 const (
@@ -78,7 +80,7 @@ func main() {
 
 	fmt.Printf("Starting. Filename: %s\n", filename)
 
-	numRecords, err := DecipherHistory(filename, key, outFile)
+	numRecords, err := historydecoder.DecipherHistory(filename, key, outFile)
 	if err != nil {
 		log.Fatal(err)
 	}
