@@ -27,10 +27,6 @@ import (
 	"github.com/rusq/callhistory/historydecoder"
 )
 
-const (
-	version = "1.1"
-)
-
 var (
 	envKey = os.Getenv("KEY")
 
@@ -38,12 +34,14 @@ var (
 	filename       = flag.String("f", "CallHistory.storedata", "filename with call data. Get it from:\n"+os.Getenv("HOME")+"/Library/Application Support/CallHistoryDB/\n")
 	outputFilename = flag.String("o", "", "output csv filename.  If not specified, result is output to stdout")
 	versionOnly    = flag.Bool("v", false, "print version and quit")
+
+	build = "v.0.0-development"
 )
 
 func printHeader() {
-	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor v.%s © 2018 rusq\n"+
+	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor %s © 2018 rusq\n"+
 		"Based on Call History Decryptor © 2016 n0fate\n",
-		version)
+		build)
 }
 
 func main() {
