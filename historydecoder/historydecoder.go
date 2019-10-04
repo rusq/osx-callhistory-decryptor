@@ -10,7 +10,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // used to access the call history
 )
 
 const (
@@ -61,12 +61,14 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 	numRecords := 0
 
 	for rows.Next() {
-		var callOffset float64
-		var answered string
-		var originated string
-		var calltype string
-		var country string
-		var blob = make([]byte, 255)
+		var (
+			callOffset float64
+			answered   string
+			originated string
+			calltype   string
+			country    string
+			blob       = make([]byte, 255)
+		)
 
 		err = rows.Scan(&callOffset, &answered, &originated, &calltype, &country, &blob)
 		if err != nil {

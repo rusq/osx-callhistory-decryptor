@@ -1,1 +1,0 @@
-go list -f '{{.GoFiles}}'

@@ -1,13 +1,13 @@
-package main
+package historydecoder
 
 import (
 	"reflect"
 	"testing"
 )
 
-func Test_getByteKey(t *testing.T) {
+func Test_DecodeB64Key(t *testing.T) {
 	type args struct {
-		keyStr string
+		key []byte
 	}
 	tests := []struct {
 		name    string
@@ -15,13 +15,13 @@ func Test_getByteKey(t *testing.T) {
 		want    []byte
 		wantErr bool
 	}{
-		{"case1", args{keyStr: "VGVzdCBrZXkK"}, []byte("Test key\n"), false},
-		{"Invalid base64", args{"xxx"}, nil, true},
-		{"Empty key", args{""}, nil, true},
+		{"case1", args{key: []byte("VGVzdCBrZXkK")}, []byte("Test key\n"), false},
+		{"Invalid base64", args{[]byte("xxx")}, nil, true},
+		{"Empty key", args{[]byte("")}, nil, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getByteKey(tt.args.keyStr)
+			got, err := DecodeB64Key(tt.args.key)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("getByteKey() error = %v, wantErr %v", err, tt.wantErr)
 				return
