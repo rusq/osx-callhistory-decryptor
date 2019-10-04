@@ -1,4 +1,4 @@
-package historydecoder
+package historydecryptor
 
 import (
 	"reflect"

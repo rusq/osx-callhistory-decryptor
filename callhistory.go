@@ -24,7 +24,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/rusq/callhistory/historydecoder"
+	"github.com/rusq/osx-callhistory-decryptor/historydecoder"
 )
 
 var (
