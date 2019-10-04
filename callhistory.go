@@ -24,7 +24,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/rusq/osx-callhistory-decryptor/historydecoder"
+	"github.com/rusq/osx-callhistory-decryptor/historydecryptor"
 )
 
 var (
@@ -52,7 +52,7 @@ func main() {
 		return
 	}
 
-	key, err := historydecoder.DecodeB64Key([]byte(*strKey))
+	key, err := historydecryptor.DecodeB64Key([]byte(*strKey))
 	if err != nil {
 		log.Fatalf("%s: make sure you have supplied the key via -k or KEY env variable", err)
 	}
@@ -68,9 +68,10 @@ func main() {
 
 	log.Printf("*** filename: %s\n", *filename)
 
-	numRecords, err := historydecoder.DecipherHistory(*filename, key, outFile)
+	numRecords, err := historydecryptor.DecipherHistory(*filename, key, outFile)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	log.Printf("*** finished. %d records processed\n", numRecords)
 }

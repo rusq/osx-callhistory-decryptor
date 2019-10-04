@@ -1,4 +1,4 @@
-module github.com/rusq/callhistory
+module github.com/rusq/osx-callhistory-decryptor
 
 go 1.13
 

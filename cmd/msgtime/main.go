@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rusq/osx-callhistory-decryptor/historydecoder"
+	"github.com/rusq/osx-callhistory-decryptor/historydecryptor"
 )
 
 func usage() {
