@@ -2,5 +2,9 @@ language: go
 
 go:
   - "1.4"
-  - "1.10"
-  - master
+
+before_install:
+  go get ${gobuild_args} ./...
+
+script:
+  make test
