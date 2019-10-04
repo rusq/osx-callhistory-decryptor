@@ -24,26 +24,26 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"runtime"
 
 	"github.com/rusq/callhistory/historydecoder"
 )
 
 const (
-	version = "1.0"
+	version = "1.1"
 )
 
-var strKey string         //key from Keychain
-var filename string       // call history database filename
-var outputFilename string // output filename
-var versionOnly bool      // output version and quit
+var (
+	envKey = os.Getenv("KEY")
+
+	strKey         string //key from Keychain
+	filename       string // call history database filename
+	outputFilename string // output filename
+	versionOnly    bool   // output version and quit
+)
 
 func init() {
 	keyMsg := "Base64 key value from OS X keychain."
-	if runtime.GOOS == "darwin" {
-		keyMsg += "  If not specified,\nthe password will be requested from the OS X keychain."
-	}
-	flag.StringVar(&strKey, "k", "", keyMsg)
+	flag.StringVar(&strKey, "k", envKey, keyMsg)
 	homeDir := os.Getenv("HOME")
 	flag.StringVar(&filename, "f", "CallHistory.storedata", "filename with call data. Get it from:\n"+homeDir+"/Library/Application Support/CallHistoryDB/\n")
 	flag.StringVar(&outputFilename, "o", "", "output csv filename.  If not specified, result is output to stdout")

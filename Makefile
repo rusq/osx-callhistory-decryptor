@@ -16,7 +16,7 @@ gofiles:
 	$(GO) list -f '{{.GoFiles}}'
 
 test:
-	$(GO) test
+	$(GO) test ./... -cover
 
 clean:
 	-rm $(OUTPUT)

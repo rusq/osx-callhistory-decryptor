@@ -10,7 +10,7 @@ Motivation for different implementation is:
 * providing more convenient output format (CSV); and
 * describe the usage to make it more accessible to those who require to get the call history from MacOS X for any reason, but lacking the time or the technical knowledge required to set up the Python interpreter and packages needed for the [ogirinal implementation][2].
 
-All credit for the decryption algorithm goes to [n0fate][1].
+All credit for the decryption logic goes to [n0fate][1].
 
 ## Purpose
 Decrypt and save the call history of the OS X Yosemite+ to a CSV file.
@@ -21,9 +21,7 @@ Downloads are available on [Releases page][5].
 ## Usage
 Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
 
-### On MacOS X
-
-Open the Terminal.app. ([How?][3])
+You will still to obtain the database and the encryption key from the MacOS system.
 
 1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:
         
@@ -33,32 +31,12 @@ Open the Terminal.app. ([How?][3])
 
     Copy it to the same directory where you've unpacked the 'callhistory'
 
-2. Start the callhistory decryptor:
+    If you get the "Operation not permitted" on latest MacOSes:
 
-        $ ./callhistory
-
-3. You will be prompted for your user's logon password, this allows the program to fetch the callhistory key from the OS X keychain.  You can also provide the call history key manually using the `-k` command line flag.  Example:
-
-        $ ./callhistory -k YSBzZWNyZXQga2V5IDEyCg==
-
-4. The output will be printed onto the terminal by default.  You can specify an output file by providing the `-o` command line flag:
-
-        $ ./callhistory -o output.csv
-
-If the database file is called differently than `CallHistory.storedata`, then use `-f` command line flag to provide the filename:
-
-        $ callhistory -o output.csv -f Calls.db
-
-### On other OSes
-You will still need to obtain the database and the encryption key from the MacOS system.
-
-1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:
-        
-        $HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata
-
-    with `$HOME` being the user's home directory.
-
-    Copy it to the same directory where you've unpacked the 'callhistory'
+      1. Go into "System Preferences";
+      2. Choose "Security and Privacy";
+      3. Go to "Privacy" tab, select "Full Disk Access" item;
+      4. Add the Utilities/Terminal.app — or whatever you're using — to the list.
 
 2. Get the key from the source MacOS X keychain:
     
@@ -76,14 +54,14 @@ You will still need to obtain the database and the encryption key from the MacOS
 
 If the database file is called differently than `CallHistory.storedata`, then use `-f` command line flag to provide the filename:
 
-        C:>callhistory.exe -o your_ex_callhistory_lol.csv -f Calls.db
+        $ callhistory -o your_ex_callhistory_lol.csv -f Calls.db
 
 ## Licence 
 OS X Call history decryptor
 
 Copyright (C) 2016  n0fate (GPL2 license)
 
-Copyright (C) 2018  rusq (golang implementation, GPL3)
+Copyright (C) 2018,2019  rusq (golang implementation, GPL3)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
