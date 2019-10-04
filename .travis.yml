@@ -10,7 +10,10 @@ go:
   - "1.13.x"  # latest
 
 before_install:
-  go get ${gobuild_args} ./...
+  - go get ${gobuild_args} ./...
 
 script:
-  go test ${gobuild_args} ./...
+  - go test ${gobuild_args} ./... -cover
+
+before_deploy:
+  - go build -o callhistory
