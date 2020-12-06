@@ -6,4 +6,5 @@ CallHistory.storedata*
 
 # executables
 callhistory
+osx-callhistory-decryptor
 cmd/msgtime/msgtime
