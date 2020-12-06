@@ -6,8 +6,7 @@ os:
   - windows
 
 go:
-  - "1.11"     # oldest supported
-  - "1.13.x"  # latest
+  - "1.15.x"  # latest
 
 before_install:
   - go get ${gobuild_args} ./...
