@@ -24,6 +24,39 @@ Downloads are available on [Releases page][5].
 ## Usage
 Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
 
+## MacOS
+
+Open the Terminal.app. ([How?][3])
+
+1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:
+        
+        "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata"
+
+    with `$HOME` being the user's home directory.
+
+    Copy it to the same directory where you've unpacked the 'callhistory':
+
+       $ cp "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata" .
+
+2. Start the callhistory decryptor:
+
+        $ ./callhistory
+
+3. You will be prompted for your user's logon password, this allows the program to fetch the callhistory key from the OS X keychain.  You can also provide the call history key manually using the `-k` command line flag.  Example:
+
+        $ ./callhistory -k YSBzZWNyZXQga2V5IDEyCg==
+
+4. The output will be printed onto the terminal by default.  You can specify an output file by providing the `-o` command line flag:
+
+        $ ./callhistory -o output.csv
+
+If the database file is called differently than `CallHistory.storedata`, then use `-f` command line flag to provide the filename:
+
+        $ callhistory -o output.csv -f Calls.db
+
+
+## Linux, Windows, etc.
+
 You will still to obtain the database and the encryption key from the MacOS system.
 
 1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:

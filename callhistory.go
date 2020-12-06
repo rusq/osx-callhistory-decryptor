@@ -28,9 +28,7 @@ import (
 )
 
 var (
-	envKey = os.Getenv("KEY")
-
-	strKey         = flag.String("k", envKey, "Base64 key value from OS X keychain.")
+	strKey         = flag.String("k", os.Getenv("KEY"), "Base64 key value from OS X keychain, on macOS may be omitted.")
 	filename       = flag.String("f", "CallHistory.storedata", "filename with call data. Get it from:\n"+os.Getenv("HOME")+"/Library/Application Support/CallHistoryDB/\n")
 	outputFilename = flag.String("o", "", "output csv filename.  If not specified, result is output to stdout")
 	versionOnly    = flag.Bool("v", false, "print version and quit")
@@ -52,7 +50,7 @@ func main() {
 		return
 	}
 
-	key, err := historydecryptor.DecodeB64Key([]byte(*strKey))
+	key, err := historydecryptor.GetByteKey(*strKey)
 	if err != nil {
 		log.Fatalf("%s: make sure you have supplied the key via -k or KEY env variable", err)
 	}
