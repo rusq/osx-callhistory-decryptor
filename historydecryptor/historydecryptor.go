@@ -66,7 +66,7 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 			answered   string
 			originated string
 			calltype   string
-			country    string
+			country    sql.NullString
 			blob       = make([]byte, 255)
 		)
 
@@ -81,13 +81,12 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 			return 0, err
 		}
 		csvOut.Write([]string{callTime.Format("2006-01-02 15:04:05Z0700"),
-			answered, originated, calltype, country, string(address)})
+			answered, originated, calltype, country.String, string(address)})
 
 		numRecords++
 	}
 
-	err = rows.Err()
-	if err != nil {
+	if err := rows.Err(); err != nil {
 		return 0, err
 	}
 	return numRecords, nil
@@ -95,7 +94,7 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 
 //Decipher deciphers ZADDRESS from OS X call history.
 func Decipher(data, key []byte) ([]byte, error) {
-	if data == nil || len(data) == 0 {
+	if len(data) == 0 {
 		return nil, nil
 	}
 	tag := data[0:TagSz]
@@ -126,7 +125,7 @@ func Decipher(data, key []byte) ([]byte, error) {
 
 //Cipher text conforming to ZADDRESS encryption pattern
 func Cipher(text, key []byte) ([]byte, error) {
-	if text == nil || len(text) == 0 {
+	if len(text) == 0 {
 		return nil, nil
 	}
 	block, err := aes.NewCipher(key)
