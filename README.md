@@ -4,56 +4,89 @@
 
 Converts the MacOS X call history to CSV file format.
 
-This is a Golang implementation of the [n0fates'][1] [Call History Decryptor][2], and is based on [n0fates'][1] presentation descibing the internals of the database: https://papers.put.as/papers/macosx/2014/Forensic-artifacts-for-Yosemite-call-history-and-sms-anlaysis-ENG.pdf
+This is a Golang implementation of the [n0fates'][1] [Call History
+Decryptor][2], and is based on [n0fates'][1] presentation descibing the
+internals of the database:
+https://papers.put.as/papers/macosx/2014/Forensic-artifacts-for-Yosemite-call-history-and-sms-anlaysis-ENG.pdf
 
 Motivation for different implementation is:
 
 * to improve usability by having just one binary executable;
 * increase the execution speed by using standard library functions;
 * providing more convenient output format (CSV); and
-* describe the usage to make it more accessible to those who require to get the call history from MacOS X for any reason, but lacking the time or the technical knowledge required to set up the Python interpreter and packages needed for the [ogirinal implementation][2].
+* describe the usage to make it more accessible to those who require to get the
+  call history from MacOS X for any reason, but lacking the time or the
+  technical knowledge required to set up the Python interpreter and packages
+  needed for the [ogirinal implementation][2].
 
 All credit for the decryption logic goes to [n0fate][1].
 
 ## Purpose
-Decrypt and save the call history of the OS X Yosemite+ to a CSV file.
+Decrypt and save the call history of the macOS to a CSV file.
 
 ## Download
 Downloads are available on [Releases page][5].
 
-## Usage
-Start the program with `-h` command line flag to see the usage help.  Available options will differ depending on the OS the program being started on.
+## How this works
 
-## MacOS
+The program creates a copy of original database in a temporary directory and
+operates on that copy.  After the callhistory has been printed out, the
+temporary file is deleted.
+
+The original database is not changed during run.
+
+For reference:  MacOSX stores the callhistory data in the following location:
+
+    "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata"
+
+## Usage
+Start the program with `-h` command line flag to see the usage help.  Available
+options will differ depending on the OS the program being started on.
+
+Simple usage:
+
+    $ ./osx-callhistory-decryptor [flags] [database_file]
+
+Where `database_file` is optional os macOS (on Windows you'd have to provide the
+filename).
+
+## macOS
 
 Open the Terminal.app. ([How?][3])
 
-1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:
-        
-        "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata"
+1. Start the call history decryptor:
 
-    with `$HOME` being the user's home directory.
+        $ ./osx-callhistory-decryptor
 
-    Copy it to the same directory where you've unpacked the 'callhistory':
+   It will try to locate the default call history file, make a temporary copy
+   and open it.
 
-       $ cp "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata" .
+2. You will be prompted for your user's logon password, this allows the program
+   to fetch the callhistory key from the OS X keychain.  You can also provide
+   the call history key manually using the `-k` command line flag.  Example:
 
-2. Start the callhistory decryptor:
+        $ ./osx-callhistory-decryptor -k YSBzZWNyZXQga2V5IDEyCg==
 
-        $ ./callhistory
+3. The output will be printed onto the terminal by default.  You can specify an
+   output file by providing the `-o` command line flag:
 
-3. You will be prompted for your user's logon password, this allows the program to fetch the callhistory key from the OS X keychain.  You can also provide the call history key manually using the `-k` command line flag.  Example:
+        $ ./osx-callhistory-decryptor -o output.csv
 
-        $ ./callhistory -k YSBzZWNyZXQga2V5IDEyCg==
+### Opening a database from a non-default location
+If, for any reason, you wish to open a different file than the default, the
+first command line parameter should contain the filename location:
 
-4. The output will be printed onto the terminal by default.  You can specify an output file by providing the `-o` command line flag:
+    $ ./osx-callhistory-decryptor -o output.csv Calls.db
 
-        $ ./callhistory -o output.csv
+### Specifying the custom time format
+By default the time format is RFC3339 without the "T" time/date separator
+(`"2006-01-02 15:04:05Z07:00"`).  Optionally, one can change that behaviour with
+the `-time-format` flag by passing a [different format][6].  For example, if is
+is required to have just a date and time, invoke program like so:
 
-If the database file is called differently than `CallHistory.storedata`, then use `-f` command line flag to provide the filename:
+    $ ./osx-callhistory-decryptor -time-format="2006-01-02 15:04"
 
-        $ callhistory -o output.csv -f Calls.db
-
+The formatting is described in depth in the [Go time package documentation][6].
 
 ## Linux, Windows, etc.
 
@@ -74,30 +107,28 @@ You will still to obtain the database and the encryption key from the MacOS syst
       3. Go to "Privacy" tab, select "Full Disk Access" item;
       4. Add the Utilities/Terminal.app — or whatever you're using — to the list.
 
-2. Get the key from the source MacOS X keychain:
+2. Get the key from the source macOS X keychain:
     
-    1. search the MacOS X keychain for the *Call History User Data Key*
+    1. search the macOS X keychain for the *Call History User Data Key*
     2. double-click the entry, and put the checkmark opposite the "show password" field.
     3. Enter your user's account password and copy the key value to the clipboard.
 
-3. Open the terminal or cmd.exe prompt on Windows ([How?][4]).  Start the callhistory decryptor on your machine:
+3. Open the terminal or cmd.exe prompt on Windows ([How?][4]).  Start the
+   callhistory decryptor on your machine:
 
-        C:>callhistory.exe -k <key value from step 2>
+        C:>osx-callhistory-decryptor.exe -k <key value from step 2> <filename from step 1>
 
-4. The output will be printed onto the terminal by default.  You can specify an output file by providing the `-o` command line flag:
+4. The output will be printed onto the terminal by default.  You can specify an
+   output file by providing the `-o` command line flag:
 
-        C:>callhistory.exe -o your_ex_callhistory_lol.csv
-
-If the database file is called differently than `CallHistory.storedata`, then use `-f` command line flag to provide the filename:
-
-        $ callhistory -o your_ex_callhistory_lol.csv -f Calls.db
+        C:>osx-callhistory-decryptor.exe -o your_ex_callhistory_lol.csv <filename from step 1>
 
 ## Licence 
 OS X Call history decryptor
 
 Copyright (C) 2016  n0fate (GPL2 license)
 
-Copyright (C) 2018,2019  rusq (golang implementation, GPL3)
+Copyright (C) 2018-2021  rusq (golang implementation, GPL3)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -118,3 +149,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 [3]: http://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line
 [4]: https://www.wikihow.com/Open-the-Command-Prompt-in-Windows
 [5]: https://github.com/rusq/osx-callhistory-decryptor/releases
+[6]: https://golang.org/pkg/time/#pkg-constants
