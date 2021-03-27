@@ -4,17 +4,17 @@
 
 Converts the MacOS X call history to CSV file format.
 
-This is a Golang implementation of the [n0fates'][1] [Call History
-Decryptor][2], and is based on [n0fates'][1] presentation descibing the
+This is the Golang implementation of the [n0fates'][1] [Call History
+Decryptor][2], and is based on [n0fate's][1] presentation descibing the
 internals of the database:
 https://papers.put.as/papers/macosx/2014/Forensic-artifacts-for-Yosemite-call-history-and-sms-anlaysis-ENG.pdf
 
-Motivation for different implementation is:
+Motivation for this implementation was:
 
-* to improve usability by having just one binary executable;
-* increase the execution speed by using standard library functions;
-* providing more convenient output format (CSV); and
-* describe the usage to make it more accessible to those who require to get the
+* to improve the usability by having just one binary executable;
+* increase the execution speed by using the standard library functions;
+* provide the convenient output format (CSV); and
+* describe the usage to make it more accessible to those who require getting the
   call history from MacOS X for any reason, but lacking the time or the
   technical knowledge required to set up the Python interpreter and packages
   needed for the [ogirinal implementation][2].
@@ -22,26 +22,25 @@ Motivation for different implementation is:
 All credit for the decryption logic goes to [n0fate][1].
 
 ## Purpose
-Decrypt and save the call history of the macOS to a CSV file.
+Decrypt and save the macOS call history to a CSV file.
 
 ## Download
-Downloads are available on [Releases page][5].
+Downloads are available on the [Releases page][5].
 
 ## How this works
 
-The program creates a copy of original database in a temporary directory and
-operates on that copy.  After the callhistory has been printed out, the
+The program creates a copy of the original database in a temporary directory and
+operates on that copy.  After the Call History has been printed out, the
 temporary file is deleted.
 
-The original database is not changed during run.
+The original database is not changed during the execution.
 
-For reference:  MacOSX stores the callhistory data in the following location:
+For reference:  macOS stores the Call History data in the following location:
 
     "$HOME/Library/Application Support/CallHistoryDB/CallHistory.storedata"
 
 ## Usage
-Start the program with `-h` command line flag to see the usage help.  Available
-options will differ depending on the OS the program being started on.
+Start the program with `-h` command line flag to see the usage help.
 
 Simple usage:
 
@@ -61,9 +60,10 @@ Open the Terminal.app. ([How?][3])
    It will try to locate the default call history file, make a temporary copy
    and open it.
 
-2. You will be prompted for your user's logon password, this allows the program
-   to fetch the callhistory key from the OS X keychain.  You can also provide
-   the call history key manually using the `-k` command line flag.  Example:
+2. You will be prompted for your user's logon password - this allows the program
+   to fetch the callhistory encryption key from the OS X keychain.  You can also
+   provide the call history encryption key manually using the `-k` command line
+   flag. Example:
 
         $ ./osx-callhistory-decryptor -k YSBzZWNyZXQga2V5IDEyCg==
 
@@ -90,7 +90,8 @@ The formatting is described in depth in the [Go time package documentation][6].
 
 ## Linux, Windows, etc.
 
-You will still to obtain the database and the encryption key from the MacOS system.
+You will need to obtain the database and the encryption key from the original
+macOS system.
 
 1. Get the copy of the `CallHistory.storedata` from source OS X machine.  The file is stored in this location:
         
