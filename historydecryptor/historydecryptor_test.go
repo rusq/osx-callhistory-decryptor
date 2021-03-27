@@ -74,12 +74,26 @@ const (
 2015-05-19 05:19:12Z,true,false,CellPhone,nz,
 2015-06-10 02:56:01Z,true,false,CellPhone,nz,
 `
+
+	noTZdata = `Date,Answered?,Outgoing?,Type,Country,Number/Address
+2014-09-30 07:42,true,false,CellPhone,ru,
+2014-10-19 14:32,true,false,CellPhone,ru,
+2014-11-11 13:39,false,true,CellPhone,ru,
+2014-11-13 17:01,true,false,CellPhone,ru,
+2014-11-17 07:43,false,false,CellPhone,ru,
+2014-11-21 08:32,false,true,CellPhone,ru,
+2014-11-21 09:31,true,false,CellPhone,ru,
+2014-11-21 17:23,false,true,CellPhone,ru,
+2015-05-19 05:19,true,false,CellPhone,nz,
+2015-06-10 02:56,true,false,CellPhone,nz,
+`
 )
 
 func TestDecipherHistory(t *testing.T) {
 	type args struct {
 		database string
 		key      []byte
+		opts     []Option
 	}
 	tests := []struct {
 		name       string
@@ -88,12 +102,13 @@ func TestDecipherHistory(t *testing.T) {
 		wantOutput string
 		wantErr    bool
 	}{
-		{"Parsing sample db", args{"sample_db/sample.storedata", []byte{0, 0}}, 10, sampledbData, false},
+		{"Parsing sample db", args{"sample_db/sample.storedata", []byte{0, 0}, nil}, 10, sampledbData, false},
+		{"different time format", args{"sample_db/sample.storedata", []byte{0, 0}, []Option{OptTimeFormat("2006-01-02 15:04")}}, 10, noTZdata, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			output := &bytes.Buffer{}
-			got, err := DecipherHistory(tt.args.database, tt.args.key, output)
+			got, err := DecipherHistory(tt.args.database, tt.args.key, output, tt.args.opts...)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("DecipherHistory() error = %v, wantErr %v", err, tt.wantErr)
 				return

@@ -8,3 +8,6 @@ CallHistory.storedata*
 callhistory
 osx-callhistory-decryptor
 cmd/msgtime/msgtime
+
+# IDE
+.idea
