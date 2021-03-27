@@ -45,7 +45,7 @@ options will differ depending on the OS the program being started on.
 
 Simple usage:
 
-   $ ./osx-callhistory-decryptor [flags] [database_file]
+    $ ./osx-callhistory-decryptor [flags] [database_file]
 
 Where `database_file` is optional os macOS (on Windows you'd have to provide the
 filename).
