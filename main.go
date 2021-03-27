@@ -54,7 +54,7 @@ func init() {
 }
 
 func printHeader() {
-	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor %s © 2018 rusq\n"+
+	fmt.Fprintf(os.Stderr, "MacOS X Call History Decryptor %s © 2018-2021 rusq\n"+
 		"Based on Call History Decryptor © 2016 n0fate\n",
 		build)
 }
@@ -80,7 +80,7 @@ func main() {
 }
 
 func run(src, dst string, strKey string) error {
-	log.Printf("*** source filename: %q", src)
+	log.Printf("*** database filename: %q", src)
 	dbfile, err := copytemp(src)
 	if err != nil {
 		return err
