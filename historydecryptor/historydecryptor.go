@@ -41,12 +41,17 @@ const (
 	DefTimeFmt = "2006-01-02 15:04:05Z07:00"
 )
 
+// outputSettings stores the output settings for the CSV.
 type outputSettings struct {
 	timeFmt string
 }
 
+// Option is the function signature that allows to modify the CSV output
+// settings.
 type Option func(*outputSettings)
 
+// OptTimeFormat specifies the time/date output format. (See time package for
+// time format specification).
 func OptTimeFormat(f string) Option {
 	return func(s *outputSettings) {
 		if f == "" {
