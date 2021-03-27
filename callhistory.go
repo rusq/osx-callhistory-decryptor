@@ -32,6 +32,7 @@ var (
 	filename       = flag.String("f", "CallHistory.storedata", "filename with call data. Get it from:\n"+os.Getenv("HOME")+"/Library/Application Support/CallHistoryDB/\n")
 	outputFilename = flag.String("o", "", "output csv filename.  If not specified, result is output to stdout")
 	versionOnly    = flag.Bool("v", false, "print version and quit")
+	timeFormat     = flag.String("time-format", historydecryptor.DefTimeFmt, "CSV output time `format`")
 
 	build = "v.0.0-development"
 )
@@ -66,7 +67,7 @@ func main() {
 
 	log.Printf("*** filename: %s\n", *filename)
 
-	numRecords, err := historydecryptor.DecipherHistory(*filename, key, outFile)
+	numRecords, err := historydecryptor.DecipherHistory(*filename, key, outFile, historydecryptor.OptTimeFormat(*timeFormat))
 	if err != nil {
 		log.Fatal(err)
 	}

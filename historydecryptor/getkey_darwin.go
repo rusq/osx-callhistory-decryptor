@@ -5,7 +5,7 @@ package historydecryptor
 import (
 	"fmt"
 
-	keychain "github.com/keybase/go-keychain"
+	"github.com/keybase/go-keychain"
 )
 
 // GetByteKey decodes the key.  If keyStr is not set, it attempts to get the key

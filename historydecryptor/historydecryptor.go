@@ -37,11 +37,40 @@ const (
 			ZADDRESS
 		from ZCALLRECORD
 		order by ZDATE`
+
+	DefTimeFmt = "2006-01-02 15:04:05Z07:00"
 )
+
+// outputSettings stores the output settings for the CSV.
+type outputSettings struct {
+	timeFmt string
+}
+
+// Option is the function signature that allows to modify the CSV output
+// settings.
+type Option func(*outputSettings)
+
+// OptTimeFormat specifies the time/date output format. (See time package for
+// time format specification).
+func OptTimeFormat(f string) Option {
+	return func(s *outputSettings) {
+		if f == "" {
+			s.timeFmt = DefTimeFmt
+		}
+		s.timeFmt = f
+	}
+}
 
 // DecipherHistory opens the database and writes CSV output to output
 // returns number of rows processed or an error (if any)
-func DecipherHistory(database string, key []byte, output io.Writer) (int, error) {
+func DecipherHistory(database string, key []byte, output io.Writer, opts ...Option) (int, error) {
+	var s = outputSettings{
+		timeFmt: DefTimeFmt,
+	}
+	for _, opt := range opts {
+		opt(&s)
+	}
+
 	db, err := sql.Open("sqlite3", database)
 	if err != nil {
 		return 0, err
@@ -59,7 +88,6 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 	csvOut.Write([]string{"Date", "Answered?", "Outgoing?", "Type", "Country", "Number/Address"})
 
 	numRecords := 0
-
 	for rows.Next() {
 		var (
 			callOffset float64
@@ -80,7 +108,7 @@ func DecipherHistory(database string, key []byte, output io.Writer) (int, error)
 		if err != nil {
 			return 0, err
 		}
-		csvOut.Write([]string{callTime.Format("2006-01-02 15:04:05Z0700"),
+		csvOut.Write([]string{callTime.Format(s.timeFmt),
 			answered, originated, calltype, country.String, string(address)})
 
 		numRecords++
