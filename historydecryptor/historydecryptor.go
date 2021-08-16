@@ -8,6 +8,7 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
+	"strconv"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3" // used to access the call history
@@ -90,19 +91,19 @@ func DecipherHistory(database string, key []byte, output io.Writer, opts ...Opti
 	numRecords := 0
 	for rows.Next() {
 		var (
-			callOffset float64
-			answered   string
-			originated string
-			calltype   string
-			country    sql.NullString
-			blob       = make([]byte, 255)
+			unparsedCallOffset string
+			answered           string
+			originated         string
+			calltype           string
+			country            sql.NullString
+			blob               = make([]byte, 255)
 		)
 
-		err = rows.Scan(&callOffset, &answered, &originated, &calltype, &country, &blob)
+		err = rows.Scan(&unparsedCallOffset, &answered, &originated, &calltype, &country, &blob)
 		if err != nil {
 			return 0, err
 		}
-		callTime := CalcCallTime(callOffset)
+		callTime := CalcCallTime(unparsedCallOffset)
 
 		address, err := Decipher(blob, key)
 		if err != nil {
@@ -178,10 +179,14 @@ func Cipher(text, key []byte) ([]byte, error) {
 }
 
 // CalcCallTime calculates the call time.
-func CalcCallTime(callOffset float64) time.Time {
-	if callOffset < 0 {
-		callOffset = 0
-	}
+func CalcCallTime(unparsedCallOffset string) time.Time {
 	startDate := time.Date(2001, time.January, 1, 0, 0, 0, 0, time.UTC)
+
+	callOffset, err := strconv.ParseFloat(unparsedCallOffset, 64)
+	if err != nil {
+		// Invalid unparsedCallOffset, return base start date.
+		return startDate
+	}
+
 	return startDate.Add(time.Second * time.Duration(int64(callOffset)))
 }
