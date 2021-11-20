@@ -60,6 +60,14 @@ Open the Terminal.app. ([How?][3])
    It will try to locate the default call history file, make a temporary copy
    and open it.
 
+   If you get the "Operation not permitted" on latest MacOSes:
+
+	1. Go into "System Preferences";
+	2. Choose "Security and Privacy";
+	3. Go to "Privacy" tab, select "Full Disk Access" item;
+	4. Add the Utilities/Terminal.app — or whatever you're using — to the list.
+
+
 2. You will be prompted for your user's logon password - this allows the program
    to fetch the callhistory encryption key from the OS X keychain.  You can also
    provide the call history encryption key manually using the `-k` command line
@@ -100,13 +108,6 @@ macOS system.
     with `$HOME` being the user's home directory.
 
     Copy it to the same directory where you've unpacked the 'callhistory'
-
-    If you get the "Operation not permitted" on latest MacOSes:
-
-      1. Go into "System Preferences";
-      2. Choose "Security and Privacy";
-      3. Go to "Privacy" tab, select "Full Disk Access" item;
-      4. Add the Utilities/Terminal.app — or whatever you're using — to the list.
 
 2. Get the key from the source macOS X keychain:
     
