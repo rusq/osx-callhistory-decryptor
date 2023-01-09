@@ -127,7 +127,7 @@ func Decipher(data, key []byte) ([]byte, error) {
 	}
 	tag := data[0:TagSz]
 	nonce := data[TagSz : TagSz+NonceSz]
-	ct := data[0x20:]
+	ct := data[TagSz+NonceSz:]
 
 	cttag := make([]byte, TagSz+len(ct))
 	copy(cttag[0:len(ct)], ct)
@@ -170,9 +170,9 @@ func Cipher(text, key []byte) ([]byte, error) {
 	}
 	cttag := gcm.Seal(nil, nonce, text, nil)
 	ct := make([]byte, len(cttag)+NonceSz)
-	copy(ct[0:0x10], cttag[len(cttag)-TagSz:])
-	copy(ct[0x10:0x20], nonce[:])
-	copy(ct[0x20:], cttag[:len(cttag)-TagSz])
+	copy(ct[0:TagSz], cttag[len(cttag)-TagSz:])
+	copy(ct[TagSz:TagSz+NonceSz], nonce[:])
+	copy(ct[TagSz+NonceSz:], cttag[:len(cttag)-TagSz])
 
 	return ct, nil
 }
