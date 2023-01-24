@@ -19,3 +19,7 @@ test:
 
 clean:
 	-rm $(OUTPUT)
+
+goreleaser:
+	goreleaser check
+	goreleaser release --snapshot --rm-dist
