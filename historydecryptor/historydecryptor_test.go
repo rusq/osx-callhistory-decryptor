@@ -126,16 +126,16 @@ func TestDecipherHistory(t *testing.T) {
 
 func Test_calcCallTime(t *testing.T) {
 	type args struct {
-		callOffset float64
+		callOffset string
 	}
 	tests := []struct {
 		name string
 		args args
 		want time.Time
 	}{
-		{"zero offset", args{0.0}, time.Date(2001, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		{"negative offset", args{-10.0}, time.Date(2001, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		{"positive offset", args{1000.0}, time.Date(2001, time.January, 1, 0, 16, 40, 0, time.UTC)},
+		{"zero offset", args{"0.0"}, time.Date(2001, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		{"negative offset", args{"-10.0"}, time.Date(2000, time.December, 31, 23, 59, 50, 0, time.UTC)},
+		{"positive offset", args{"1000.0"}, time.Date(2001, time.January, 1, 0, 16, 40, 0, time.UTC)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

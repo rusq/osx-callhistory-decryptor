@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/csv"
+	"errors"
 	"io"
 	"log"
 	"strconv"
@@ -99,16 +100,25 @@ func DecipherHistory(database string, key []byte, output io.Writer, opts ...Opti
 			blob               = make([]byte, 255)
 		)
 
-		err = rows.Scan(&unparsedCallOffset, &answered, &originated, &calltype, &country, &blob)
-		if err != nil {
+		if err = rows.Scan(&unparsedCallOffset, &answered, &originated, &calltype, &country, &blob); err != nil {
 			return 0, err
 		}
 		callTime := CalcCallTime(unparsedCallOffset)
 
-		address, err := Decipher(blob, key)
-		if err != nil {
-			return 0, err
+		var address []byte
+		if isEncrypted(blob) {
+			if len(key) == 0 {
+				return 0, errors.New("your database is encrypted, but you didn't provide a key")
+			}
+			address, err = Decipher(blob, key)
+			if err != nil {
+				return 0, err
+			}
+		} else {
+			// this indicates that the row might not be encrypted at all.
+			address = blob
 		}
+
 		csvOut.Write([]string{callTime.Format(s.timeFmt),
 			answered, originated, calltype, country.String, string(address)})
 
@@ -121,7 +131,11 @@ func DecipherHistory(database string, key []byte, output io.Writer, opts ...Opti
 	return numRecords, nil
 }
 
-//Decipher deciphers ZADDRESS from OS X call history.
+func isEncrypted(blob []byte) bool {
+	return len(blob) >= TagSz+NonceSz
+}
+
+// Decipher deciphers ZADDRESS from OS X call history.
 func Decipher(data, key []byte) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, nil
@@ -152,7 +166,7 @@ func Decipher(data, key []byte) ([]byte, error) {
 	return pt, nil
 }
 
-//Cipher text conforming to ZADDRESS encryption pattern
+// Cipher text conforming to ZADDRESS encryption pattern
 func Cipher(text, key []byte) ([]byte, error) {
 	if len(text) == 0 {
 		return nil, nil

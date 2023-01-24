@@ -34,6 +34,7 @@ var defFile = filepath.Join(os.Getenv("HOME"), "Library", "Application Support",
 
 var (
 	strKey         = flag.String("k", os.Getenv("KEY"), "Base64 key value from OS X keychain, on macOS may be omitted.")
+	omitDecryption = flag.Bool("no-key", false, "omit decryption")
 	outputFilename = flag.String("o", "", "output csv filename.  If not specified, result is output to stdout")
 	versionOnly    = flag.Bool("v", false, "print version and quit")
 	timeFormat     = flag.String("time-format", historydecryptor.DefTimeFmt, "CSV output time `format`")
@@ -74,12 +75,12 @@ func main() {
 		src = defFile
 	}
 
-	if err := run(src, *outputFilename, *strKey); err != nil {
+	if err := run(src, *outputFilename, *strKey, *omitDecryption); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func run(src, dst string, strKey string) error {
+func run(src, dst string, strKey string, omitDecryption bool) error {
 	log.Printf("*** database filename: %q", src)
 	dbfile, err := copytemp(src)
 	if err != nil {
@@ -88,9 +89,14 @@ func run(src, dst string, strKey string) error {
 	defer os.Remove(dbfile)
 	log.Printf("*** temporary file (will be removed): %q", dbfile)
 
-	key, err := historydecryptor.GetByteKey(strKey)
-	if err != nil {
-		return fmt.Errorf("%w: make sure you have supplied the key via -k or KEY env variable", err)
+	var key []byte
+	if omitDecryption {
+		key = []byte{}
+	} else {
+		key, err = historydecryptor.GetByteKey(strKey)
+		if err != nil {
+			return fmt.Errorf("%w: make sure you have supplied the key via -k <key> or KEY env variable", err)
+		}
 	}
 
 	var output = os.Stdout

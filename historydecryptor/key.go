@@ -2,13 +2,15 @@ package historydecryptor
 
 import (
 	"encoding/base64"
-	"fmt"
+	"errors"
 )
+
+var ErrNoKey = errors.New("key is not supplied")
 
 // DecodeB64Key decodes the provided key from base64 encoding
 func DecodeB64Key(key []byte) ([]byte, error) {
 	if len(key) == 0 {
-		return nil, fmt.Errorf("key is not supplied")
+		return nil, ErrNoKey
 	}
 	ret := make([]byte, base64.StdEncoding.DecodedLen(len(key)))
 	l, err := base64.StdEncoding.Decode(ret, key)
