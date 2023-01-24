@@ -11,3 +11,5 @@ cmd/msgtime/msgtime
 
 # IDE
 .idea
+
+dist

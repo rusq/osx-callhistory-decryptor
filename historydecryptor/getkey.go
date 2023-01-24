@@ -3,10 +3,6 @@
 
 package historydecryptor
 
-import (
-	"fmt"
-)
-
 func GetByteKey(keyStr string) ([]byte, error) {
 	if len(keyStr) == 0 {
 		return nil, ErrNoKey
