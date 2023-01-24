@@ -1,8 +1,10 @@
+//go:build darwin
 // +build darwin
 
 package historydecryptor
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/keybase/go-keychain"
@@ -29,6 +31,9 @@ func getCallHistoryPwd(interactive bool) ([]byte, error) {
 	passwd, err := keychain.GetGenericPassword("Call History User Data Key", "", "Call History User Data Key", "")
 	if err != nil {
 		return nil, err
+	}
+	if passwd == nil {
+		return nil, errors.New("key not found in the keychain")
 	}
 	key, err := DecodeB64Key(passwd)
 	if err != nil {
