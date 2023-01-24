@@ -1,3 +1,4 @@
+//go:build !darwin
 // +build !darwin
 
 package historydecryptor
@@ -8,7 +9,7 @@ import (
 
 func GetByteKey(keyStr string) ([]byte, error) {
 	if len(keyStr) == 0 {
-		return nil, fmt.Errorf("Use -k <key> parameter to supply the key.")
+		return nil, ErrNoKey
 	}
 	key, err := DecodeB64Key([]byte(keyStr))
 	if err != nil {

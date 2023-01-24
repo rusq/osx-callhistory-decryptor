@@ -2,6 +2,13 @@
 
 [![Build Status](https://travis-ci.org/rusq/osx-callhistory-decryptor.svg?branch=master)](https://travis-ci.org/rusq/osx-callhistory-decryptor)
 
+> ℹ PLEASE NOTE
+> 
+> since macOS 13 (Ventura) the Call History database appears to be not
+> encrypted.  You can run the program with `-no-key` flag to view the call
+> history.  The `-k` flag is no longer required, but still available for
+> earlier versions of macOS.
+
 Converts the MacOS X call history to CSV file format.
 
 This is the Golang implementation of the [n0fates'][1] [Call History

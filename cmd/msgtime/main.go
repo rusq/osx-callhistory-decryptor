@@ -4,7 +4,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/rusq/osx-callhistory-decryptor/historydecryptor"
@@ -31,10 +30,6 @@ func main() {
 	fmt.Printf("%s\n", date)
 }
 
-func convert(floatOffset string) (time.Time, error) {
-	t, err := strconv.ParseFloat(floatOffset, 64)
-	if err != nil {
-		return time.Time{}, err
-	}
-	return historydecryptor.CalcCallTime(t), nil
+func convert(offset string) (time.Time, error) {
+	return historydecryptor.CalcCallTime(offset), nil
 }
